@@ -1,0 +1,27 @@
+{
+  "name": "db-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "lint": "ts-standard",
+    "tsc": "tsc",
+    "dev": "ts-node-dev server/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0",
+    "node-http": "^0.0.5",
+    "prisma": "^5.9.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "typescript": "5.3.3"
+  }
+}
