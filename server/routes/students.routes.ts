@@ -5,7 +5,7 @@ import {
   createStudent,
   updatedStudent,
   deleteStudent
-  } from "../controllers/students.controllers";
+  } from "../controllers/students.controllers.ts";
 
 
 const router = Router();
@@ -15,3 +15,5 @@ router.get("/students/:id", getStudent);
 router.post("/students", createStudent);
 router.put("/students/:id", updatedStudent);
 router.delete("/students/:id", deleteStudent);
+
+export default router;

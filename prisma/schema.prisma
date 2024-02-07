@@ -23,13 +23,12 @@ model Teacher {
   firstName   String 
   lastName    String
   subject     Subject
-  students     Student  @relation(fields: [teacherId], references: [id])
-  teacherId   String   @unique
+  students    Student[]  @relation("TeacherToStudent")
 }
 
 model Student {
   id         String    @id @default(uuid())
   fistName   String
   lastName   String
-  teacher    Teacher?  
+  teacher    Teacher[] @relation("TeacherToStudent") 
 }

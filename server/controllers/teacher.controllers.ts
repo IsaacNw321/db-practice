@@ -1,10 +1,12 @@
+import { Teacher } from "@prisma/client";
 import { prisma } from "../lib/prisma";
+import { Request, Response } from "express";
 
-export const getTeachers = async ({req , res} : any ) =>{
+export const getTeachers = async (_: Request , res : Response  ) =>{
   try{
     const teachers = await prisma.teacher.findMany()
     if(teachers.length <= 0){
-        res.status(400).json({message: 'There are not users yet!'});
+        res.status(400).json({message: 'There are not teachers yet!'});
     };
     if(teachers.length > 0){
         res.status(200).json(teachers);
@@ -14,7 +16,7 @@ export const getTeachers = async ({req , res} : any ) =>{
     }            
 }
 
-export const getTeacher = async ({req, res}: any) => {
+export const getTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
   try {
     const teacher = await prisma.teacher.findUnique({
@@ -30,8 +32,8 @@ export const getTeacher = async ({req, res}: any) => {
 }
 
 
-export const createTeacher = async ({req, res} : any) =>{
-  const {firstName , lastName, subject, students, id} = req.body;
+export const createTeacher = async (req: Request , res : Response ) =>{
+  const {firstName , lastName, subject, id} = req.body;
   try {
     const newTeacher = await prisma.teacher.create({
       data : {
@@ -39,8 +41,7 @@ export const createTeacher = async ({req, res} : any) =>{
         firstName: firstName,
         lastName: lastName,
         subject: subject,
-        student : students,
-      }
+      } as Teacher
     })
     newTeacher
       ? res.status(200).json({message: "created"})
@@ -50,7 +51,7 @@ export const createTeacher = async ({req, res} : any) =>{
   }
 }
 
-export const updateTeacher = async ({req, res} : any) => {
+export const updateTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
   const {firstName , lastName, subject} = req.body;
   try {
@@ -69,7 +70,7 @@ export const updateTeacher = async ({req, res} : any) => {
   }
 }
 
-export const deleteTeacher = async ({req, res}: any) =>{
+export const deleteTeacher = async (req: Request , res : Response ) =>{
   const {id} = req.params;
   try {
     const deletedTeacher = await prisma.teacher.delete({
