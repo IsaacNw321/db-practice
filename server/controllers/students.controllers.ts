@@ -64,7 +64,7 @@ export const deleteStudent = async (req: Request , res : Response ) =>{
   const {id} = req.params;
   try {
     const deletedStudent = await prisma.student
-    .findUnique({where : {id:id}})
+    .delete({where : {id:id}})
     deletedStudent
       ? res.status(200).json({message : "deleted"})
       : res.status(404).json({message : "not found it"})

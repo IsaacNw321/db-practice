@@ -19,13 +19,11 @@ export const getTeachers = async (_: Request , res : Response  ) =>{
 export const getTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
   try {
-    const teacher = await prisma.teacher.findUnique({
-       where: {
-        id : id
-       }
-    })
-    if (!teacher)  res.status(404).json({message : "There is no Teacher with that id"})
-    res.json(teacher);
+    const teacher = await prisma.teacher
+    .findUnique({ where: { id : id} })
+    teacher
+      ? res.status(200).json(teacher)
+      : res.status(404).json({message : "not found"})
   } catch (error) {
     res.status(500).json({message: error})
   }
@@ -33,11 +31,10 @@ export const getTeacher = async (req: Request , res : Response ) => {
 
 
 export const createTeacher = async (req: Request , res : Response ) =>{
-  const {firstName , lastName, subject, id} = req.body;
+  const {firstName , lastName, subject} = req.body;
   try {
     const newTeacher = await prisma.teacher.create({
       data : {
-        id : id,
         firstName: firstName,
         lastName: lastName,
         subject: subject,
@@ -56,12 +53,13 @@ export const updateTeacher = async (req: Request , res : Response ) => {
   const {firstName , lastName, subject} = req.body;
   try {
     const updateTeacher = await prisma.teacher
-    .findUnique({ where: { id: id } })
-    if(updateTeacher){
-    updateTeacher.firstName = firstName;
-    updateTeacher.lastName = lastName;
-    updateTeacher.subject = subject;
-    }
+    .update
+    ({ where : {id : id},
+    data : {
+      firstName : firstName,
+      lastName : lastName,
+      subject : subject
+    }, }) as Teacher
     updateTeacher
       ? res.status(200).json({message : "updated"})
       : res.status(404).json({message : "not found"})
