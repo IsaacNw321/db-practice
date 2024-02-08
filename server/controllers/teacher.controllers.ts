@@ -123,4 +123,39 @@ export const getSubjectsTeacher = async (req : Request, res :Response) => {
   }
 }
 
-
+export const getStudentsNoteSubjectTeacher = async (req : Request, res: Response) => {
+  const {id, subject} = req.params;
+  try {
+    const noteSubjectStudents = await prisma.student.findMany({
+      where :{
+        subjects : {
+           some :{
+            subjectName : subject
+           }
+        },
+        teacher : {
+          some : {
+            id : id
+          }
+        } 
+      },
+      include : {
+        note: {
+          where : {
+            subject : {
+              subjectName : subject
+            },
+          },
+          select : {
+            noteValue : true
+          }
+        }
+      }
+    })
+    noteSubjectStudents
+      ? res.status(200).json(noteSubjectStudents)
+      : res.status(404).json("not found")
+  } catch (error) {
+    res.status(500).json({message : error})
+  }
+}
