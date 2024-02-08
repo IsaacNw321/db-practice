@@ -31,13 +31,12 @@ export const getTeacher = async (req: Request , res : Response ) => {
 
 
 export const createTeacher = async (req: Request , res : Response ) =>{
-  const {firstName , lastName, subject} = req.body;
+  const {firstName , lastName} = req.body;
   try {
     const newTeacher = await prisma.teacher.create({
       data : {
         firstName: firstName,
         lastName: lastName,
-        subject: subject,
       } as Teacher
     })
     newTeacher
@@ -50,7 +49,7 @@ export const createTeacher = async (req: Request , res : Response ) =>{
 
 export const updateTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
-  const {firstName , lastName, subject} = req.body;
+  const {firstName , lastName} = req.body;
   try {
     const updateTeacher = await prisma.teacher
     .update
@@ -58,7 +57,6 @@ export const updateTeacher = async (req: Request , res : Response ) => {
     data : {
       firstName : firstName,
       lastName : lastName,
-      subject : subject
     }, }) as Teacher
     updateTeacher
       ? res.status(200).json({message : "updated"})
