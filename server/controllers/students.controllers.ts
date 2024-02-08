@@ -72,3 +72,23 @@ export const deleteStudent = async (req: Request , res : Response ) =>{
     res.status(500).json({message : error})
   }
 }
+
+export const getStudentNotes = async (req: Request, res: Response) =>{
+  const {id} = req.params;
+  try {
+    const studentnotes = await prisma.student.findUnique({
+      where : {
+         id : id
+      },
+      include : {
+        note : true 
+      }
+    })
+    studentnotes
+      ? res.status(200).json(studentnotes)
+      : res.status(404).json({message : "there is no student with that id"})
+  } catch (error) {
+    res.status(500).json({message : error})
+  }
+}
+
