@@ -10,25 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Subject {
-  MATH
-  HISTORY
-  CHEMICAL
-  SPORTS
-  null
-}
 
 model Teacher {
   id          String   @id  @default(uuid())
   firstName   String 
   lastName    String
-  subject     Subject
   students    Student[]  @relation("TeacherToStudent")
+  subjects    Subject[]
 }
 
 model Student {
-  id         String    @id @default(uuid())
-  fistName   String
-  lastName   String
-  teacher    Teacher[] @relation("TeacherToStudent") 
+  id            String    @id @default(uuid())
+  fistName      String
+  lastName      String
+  teacher       Teacher[] @relation("TeacherToStudent") 
+  subjects      Subject[] @relation("StudentToSubject")
+  note          Note[]     
+}
+model Subject {
+  id           String     @id @default(uuid())
+  subjectName  String     @unique
+  teacher     Teacher[]
+  students    Student[]   @relation("StudentToSubject")
+  notes       Note[]      
+}
+
+model Note {
+  id         String   @id @default(uuid())
+  student    Student  @relation(fields: [studentId], references: [id])
+  subject    Subject   @relation(fields: [subjectId], references: [id])
+  noteValue  Int       @default(0) @db.SmallInt
+  studentId  String
+  subjectId  String
 }

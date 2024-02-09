@@ -6,7 +6,11 @@ export const getStudent = async (req: Request , res : Response ) => {
   const {id} = req.params;
   try {
     const student = await prisma.student
-    .findUnique({where : {id : id }})
+    .findUnique({where : {id : id },
+    include : {
+      subjects : true,
+      note : true
+    }})
     student
       ? res.status(200).json(student)
       : res.status(404).json({message : "not found"})
@@ -17,7 +21,13 @@ export const getStudent = async (req: Request , res : Response ) => {
 
 export const getStudents = async (_: Request , res : Response  ) => {
   try {
-    const students = await prisma.student.findMany()
+    const students = await prisma.student.findMany({
+      include : {
+        subjects : true,
+        note : true,
+        teacher : true
+      }
+    })
     res.json(students);
   } catch (error) {
     res.status(500).json({message : error})
@@ -51,7 +61,7 @@ export const updatedStudent = async (req: Request , res : Response ) => {
       data : {
         fistName : firstName,
         lastName : lastName,
-      }, }) as Student
+   }}) as Student
     updatedStudent
       ? res.status(200).json(updatedStudent)
       : res.status(400).json({message : "not updated"})
@@ -68,6 +78,25 @@ export const deleteStudent = async (req: Request , res : Response ) =>{
     deletedStudent
       ? res.status(200).json({message : "deleted"})
       : res.status(404).json({message : "not found it"})
+  } catch (error) {
+    res.status(500).json({message : error})
+  }
+}
+
+export const getStudentNotes = async (req: Request, res: Response) =>{
+  const {id} = req.params;
+  try {
+    const studentnotes = await prisma.student.findUnique({
+      where : {
+         id : id
+      },
+      include : {
+        note : true 
+      }
+    })
+    studentnotes
+      ? res.status(200).json(studentnotes)
+      : res.status(404).json({message : "there is no student with that id"})
   } catch (error) {
     res.status(500).json({message : error})
   }
