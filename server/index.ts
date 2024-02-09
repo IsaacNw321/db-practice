@@ -12,7 +12,7 @@ app.use(logger("dev"))
 app.use(express.json());
 app.use("/api", teacherRoutes);
 app.use("/api",studentsRoutes);
-app.use("api/",subjectRoutes);
+app.use("/api",subjectRoutes);
 
 server.listen(Port, ()=> {
   console.log(`Connected to Port ${Port}`)

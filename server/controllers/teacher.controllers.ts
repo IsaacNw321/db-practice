@@ -5,7 +5,12 @@ import { Request, Response } from "express";
 
 export const getTeachers = async (_: Request , res : Response  ) =>{
   try{
-    const teachers = await prisma.teacher.findMany()
+    const teachers = await prisma.teacher.findMany({
+      include : {
+        subjects :true,
+        students : true
+      }
+    })
     if(teachers.length <= 0){
         res.status(400).json({message: 'There are not teachers yet!'});
     };
@@ -21,7 +26,11 @@ export const getTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
   try {
     const teacher = await prisma.teacher
-    .findUnique({ where: { id : id} })
+    .findUnique({ where: { id : id},
+      include : {
+        subjects :true,
+        students : true
+      } })
     teacher
       ? res.status(200).json(teacher)
       : res.status(404).json({message : "not found"})
@@ -50,7 +59,7 @@ export const createTeacher = async (req: Request , res : Response ) =>{
 
 export const updateTeacher = async (req: Request , res : Response ) => {
   const {id} = req.params;
-  const {firstName , lastName} = req.body;
+  const {firstName , lastName , subjectName} = req.body;
   try {
     const updateTeacher = await prisma.teacher
     .update
@@ -58,7 +67,12 @@ export const updateTeacher = async (req: Request , res : Response ) => {
     data : {
       firstName : firstName,
       lastName : lastName,
-    }, }) as Teacher
+      subjects : {
+        connect : {
+          subjectName : subjectName
+        }
+      }
+    } }) as Teacher
     updateTeacher
       ? res.status(200).json({message : "updated"})
       : res.status(404).json({message : "not found"})

@@ -5,8 +5,7 @@ import {
   createStudent,
   updatedStudent,
   deleteStudent,
-  getStudentNotes,
-
+  getStudentNotes
   } from "../controllers/students.controllers.ts";
 
 
@@ -18,6 +17,7 @@ router.post("/students", createStudent);
 router.put("/students/:id", updatedStudent);
 router.delete("/students/:id", deleteStudent);
 router.get("/students/:id/notes", getStudentNotes);
+
 
 
 export default router;

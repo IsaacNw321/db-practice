@@ -61,7 +61,7 @@ export const updatedStudent = async (req: Request , res : Response ) => {
       data : {
         fistName : firstName,
         lastName : lastName,
-      }, }) as Student
+   }}) as Student
     updatedStudent
       ? res.status(200).json(updatedStudent)
       : res.status(400).json({message : "not updated"})
