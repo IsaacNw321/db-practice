@@ -6,7 +6,11 @@ export const getStudent = async (req: Request , res : Response ) => {
   const {id} = req.params;
   try {
     const student = await prisma.student
-    .findUnique({where : {id : id }})
+    .findUnique({where : {id : id },
+    include : {
+      subjects : true,
+      note : true
+    }})
     student
       ? res.status(200).json(student)
       : res.status(404).json({message : "not found"})
@@ -17,7 +21,13 @@ export const getStudent = async (req: Request , res : Response ) => {
 
 export const getStudents = async (_: Request , res : Response  ) => {
   try {
-    const students = await prisma.student.findMany()
+    const students = await prisma.student.findMany({
+      include : {
+        subjects : true,
+        note : true,
+        teacher : true
+      }
+    })
     res.json(students);
   } catch (error) {
     res.status(500).json({message : error})
@@ -91,4 +101,3 @@ export const getStudentNotes = async (req: Request, res: Response) =>{
     res.status(500).json({message : error})
   }
 }
-
