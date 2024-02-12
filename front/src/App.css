@@ -50,5 +50,32 @@
   height: 200px;
   border-radius: 20px;
   border: 2px solid black;
-  gap: 20px;
+  gap: 50px;
+}
+
+.cardCont ul{
+  font-size: 24px;
+  gap: 50px;
+  display:flex;
+  flex-direction: row;
+}
+
+.cardCont ul,h2:hover{
+  cursor: pointer;
+}
+
+.subjects{
+  display:flex;
+  flex-direction: column;
+}
+
+.cardCont h3{
+  font-size: 30px;
+}
+
+.studentCont{
+  background-color: red;
+  color: blue;
+  width: 80px;
+  height: 80px;
 }
