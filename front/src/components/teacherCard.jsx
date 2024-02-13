@@ -1,25 +1,20 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
-import {StudentSubjectNote} from './StudentSubjectNote';
-import { getTeacherStudentsNote } from '../utils/teachers.jsx';
+import { useState } from 'react';
+import { getTeacherStudentsNote } from '../utils/teachers';
 
-const TeacherCard = ({ id, firstName, lastName,subjects, subjectName, onSubjectClick }) => {
-  const [students, setStudents] = useState([]);
-  const [showNotes, setShowNotes] = useState(false);
-  useEffect(() => {
-    const handleTeacherClick = async () => {
-      if (!subjectName) {
-        console.error('subjectName is undefined');
-        return
-      }
-      const students= await getTeacherStudentsNote(id, subjectName);
-      console.log(students);
-      setStudents(students);
-    };
 
-    handleTeacherClick();
-  },[id, subjectName]);
 
+const TeacherCard = ({ id, firstName, lastName,subjects }) => {
+ 
+  const [showNotes, setShowNotes] = useState({});
+  const [subjectnotes, setSubjectNotes] = useState([]);
+
+  const handleSubjectClick = async (id, subject) => {
+    const subjectnotes = await getTeacherStudentsNote(id, subject);
+    setSubjectNotes(subjectnotes);
+    console.log(subjectnotes);
+    return subjectnotes;
+  };
 
   return (
     <div className="cardCont">
@@ -32,21 +27,20 @@ const TeacherCard = ({ id, firstName, lastName,subjects, subjectName, onSubjectC
         <h3>Subjects</h3>
         <ul>
           {subjects.map((subject, index) => (
-            <li key={index} onClick={() => onSubjectClick(id, subject.subjectName)}>
+            <li key={index} onClick={() => {
+              handleSubjectClick(id, subject.subjectName);
+              }}>
               {subject.subjectName}
-            <button onClick={() => setShowNotes(!showNotes)}>
+            <button onClick={() => setShowNotes(prevState => ({ ...prevState, [index]: !prevState[index] }))}>
            </button>
-           <div>
-             {showNotes && students.map((student,index) => (
-               <StudentSubjectNote
-                key={index}
-               firstName={student.fistName}
-               lastName={student.lastName}
-               noteValue={student.noteValue}
-               showNotes={setShowNotes(!showNotes)}
-               />
-               ))}
-           </div>
+             {showNotes[index] && 
+             (
+               subjectnotes.map((student,index) => (
+              <li key={index}>
+                {student.fistName}
+                {student.lastName}
+              </li>
+             )))}
             </li>
           ))}
         </ul>
