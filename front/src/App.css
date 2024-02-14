@@ -43,15 +43,18 @@
 
 .cardCont{
   display: flex;
+  align-items: center;
+  justify-content: space-around;
   flex-direction: row;
-  background-color: white;
-  color: black;
-  width: 800px;
-  height: 200px;
+  background-color: #191619;
+  color: white;
+  width: 700px;
+  height: 300px;
   border-radius: 20px;
   border: 2px solid black;
   gap: 50px;
 }
+
 
 .cardCont ul{
   font-size: 24px;
@@ -78,4 +81,41 @@
   color: blue;
   width: 80px;
   height: 80px;
+}
+
+.studentNote{
+  display: flex;
+  flex-direction: row;
+  background-color: transparent;
+  color: white;
+  width: 0px;
+  height: 50px;
+}
+
+.subjects ul,li{
+  list-style:none;
+  font-size: 20px;
+  animation-duration: 1s;
+  animation-name: slideup;
+}
+
+.subjects ul{
+  width: 300px;
+  height: 150px;
+}
+
+.subjects il{
+  width: 100px;
+}
+
+@keyframes slideup {
+  from {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+
+  to{
+    opacity:1;
+    transform: translateY(0%);
+  }
 }

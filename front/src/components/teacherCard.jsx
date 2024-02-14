@@ -6,7 +6,7 @@ import { getTeacherStudentsNote } from '../utils/teachers';
 
 const TeacherCard = ({ id, firstName, lastName,subjects }) => {
  
-  const [showNotes, setShowNotes] = useState({});
+  const [showNotes, setShowNotes] = useState(null);
   const [subjectnotes, setSubjectNotes] = useState([]);
 
   const handleSubjectClick = async (id, subject) => {
@@ -17,7 +17,7 @@ const TeacherCard = ({ id, firstName, lastName,subjects }) => {
   };
 
   return (
-    <div className="cardCont">
+    <div className={"cardCont"}>
       <h2>
         {firstName}
         <br />
@@ -29,16 +29,18 @@ const TeacherCard = ({ id, firstName, lastName,subjects }) => {
           {subjects.map((subject, index) => (
             <li key={index} onClick={() => {
               handleSubjectClick(id, subject.subjectName);
+              setShowNotes(showNotes === index ? null : index);
               }}>
               {subject.subjectName}
-            <button onClick={() => setShowNotes(prevState => ({ ...prevState, [index]: !prevState[index] }))}>
-           </button>
-             {showNotes[index] && 
+             {showNotes=== index && 
              (
                subjectnotes.map((student,index) => (
-              <li key={index}>
+              <li key={index} className="studentNote">
                 {student.fistName}
                 {student.lastName}
+                {student.note.map((note, index) => (
+                  <p key={index}>{note.noteValue}</p>
+                ))}
               </li>
              )))}
             </li>
